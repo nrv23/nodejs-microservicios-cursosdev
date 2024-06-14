@@ -1,0 +1,1 @@
+Si se usa el npm ci, instala las depedencias pero sin modificar el package.json
