@@ -12,7 +12,7 @@ app.get("/api/message", (req, res) => {
     })
 })
 
-app.use("**", (_, res) => res.status(404).send("Ruta no encontrada"));
+app.use("**", (_, res) => res.status(404).send("route no encontrada"));
 
 
 module.exports = app;

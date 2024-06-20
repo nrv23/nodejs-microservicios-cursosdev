@@ -8,7 +8,7 @@ app.get("/", (req, res) => res.send("Todo Ok"));
 app.get("/healtcheck", (req, res) => res.send("Healthy"));
 app.get("/api/message", async (req, res) => {
 
-    const pathBackend2 = "http://localhost:19030/api/message";
+    const pathBackend2 = process.env.SERVICE_BACKEND2 ||  "http://backend2:19030/api/message";
 
     const {
         data: {

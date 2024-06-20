@@ -1,0 +1,51 @@
+version: "3.8"
+
+services:
+  frontend:
+    build: 
+      context: ./frontend
+      dockerfile: Dockerfile
+    image: frontend
+    container_name: frontend
+    ports:
+      - "9010:19010"
+    environment:
+      - SERVICE_BACKEND1=http://localhost:9020/api/message
+      - PORT=19010
+    restart: on-failure
+    depends_on:
+      - backend1
+    networks:
+      - net-ms
+
+  backend1:
+    build: 
+      context: ./backend1
+      dockerfile: Dockerfile
+    image: backend1
+    container_name: backend1
+    ports:
+      - "9020:19020"
+    environment:
+      - SERVICE_BACKEND2=http://backend2:19030/api/message
+      - PORT=19020
+    restart: on-failure
+    depends_on:
+      - backend2
+    networks:
+      - net-ms
+
+  backend2:
+    build: 
+      context: ./backend2
+      dockerfile: Dockerfile
+    image: backend2
+    container_name: backend2
+    environment:
+      - PORT=19030
+    restart: on-failure
+    networks:
+      - net-ms
+networks:
+  net-ms:
+    driver: bridge 
