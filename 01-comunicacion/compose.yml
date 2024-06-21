@@ -15,6 +15,12 @@ services:
     restart: on-failure
     depends_on:
       - backend1
+    healthcheck:
+      test: ["CMD", "curl","-f","http://localhost:19010/healtcheck"]
+      interval: 1m30s
+      timeout: 30s
+      retries: 5
+      start_period: 30s
     networks:
       - net-ms
 
@@ -32,6 +38,12 @@ services:
     restart: on-failure
     depends_on:
       - backend2
+    healthcheck:
+      test: ["CMD", "curl","-f","http://localhost:19020/healtcheck"]
+      interval: 1m30s
+      timeout: 30s
+      retries: 5
+      start_period: 30s
     networks:
       - net-ms
 
@@ -44,6 +56,12 @@ services:
     environment:
       - PORT=19030
     restart: on-failure
+    healthcheck:
+      test: ["CMD", "curl","-f","http://localhost:19030/healtcheck"]
+      interval: 1m30s
+      timeout: 30s
+      retries: 5
+      start_period: 10s
     networks:
       - net-ms
 networks:
