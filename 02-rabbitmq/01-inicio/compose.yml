@@ -1,0 +1,22 @@
+version: "3.8"
+
+services:
+  rabbitmq:
+    image: rabbitmq:management-alpine
+    container_name: rabbitmq
+    restart: on-failure
+    ports:
+      - "15672:15672"
+      - "5672:5672" #este puerto es por donde las aplicaciones envian los datos a rabbit
+    healthcheck:
+      test: ["CMD", "rabbitmqctl", "status"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+      start_period: 20s
+    networks:
+      - rabbitmq-network
+
+networks:
+  rabbitmq-network:
+    driver: bridge
