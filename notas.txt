@@ -3,3 +3,6 @@ docker compose ps -- listar los contendores que estan asociados al compose
 docker compuse down -- elimina los contenedores y ret asociados al compose
 docker compuse -d --build -- cargar el docker compose y forzar a crear nuevamente las imagenes
 para instalar herramientas en un contenedor de docker, usar apk add 
+intercambiador de tipo fanout se conecta a dos colas al mismo tiempo y los mensajes se cargan a las dos colas al mismo tiempo
+las colas pueden tener varios consumidores y los mensajes se van enviando turno por consumidor
+el intercambiador de tipo direct tiene un discriminador para filtrar los mensajes entrantes

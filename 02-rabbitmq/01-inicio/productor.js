@@ -14,6 +14,10 @@ async function start() {
   const message = args.length > 0 ? args[0] : "message by default";
   // envia el mensaje y debe enviarse el contenido como un buffer
   channel.sendToQueue(queueName, Buffer.from(message));
+  setTimeout(() =>{
+    connection.close();
+    process.exit(1);
+  },2000)
 }
 
 
