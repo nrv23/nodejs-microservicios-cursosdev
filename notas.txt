@@ -6,3 +6,9 @@ para instalar herramientas en un contenedor de docker, usar apk add
 intercambiador de tipo fanout se conecta a dos colas al mismo tiempo y los mensajes se cargan a las dos colas al mismo tiempo
 las colas pueden tener varios consumidores y los mensajes se van enviando turno por consumidor
 el intercambiador de tipo direct tiene un discriminador para filtrar los mensajes entrantes
+si en el intercambiador de tipo fanout hay dos consumidores con el mismo routingkey, a ambos les llega el mensaje
+por tener el mismo routingkey
+
+el intercambiador de tipo topic es muy parecido al intercambiador de tipo fanout con la 
+diferencia que tiene la opcion de enviar varios argumentos al routingKey.
+El fanout tiene un routingkey donde envia solo a los que poseen ese routingkey

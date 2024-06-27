@@ -17,20 +17,26 @@ async function start() {
   const assertQueue = await channel.assertQueue("", {
     exclusive: true,
     deadLetterExchange: exchangeDQL,
-    deadLetterRoutingKey: ""
+    deadLetterRoutingKey: "dlq-error" // conecta con la cola donde se van a enviar los mensajes de error
   });
   // el mensaje solo esa cola lo ve
 
   const routingKey = args.length > 0 ? args[0] : "key";
-  await channel.bindQueue(assertQueue.queue, exchange, routingKey)
+  await channel.bindQueue(assertQueue.queue, exchange, routingKey);
 
   // consumir mensaje
   channel.consume(
     assertQueue.queue,
     data => {
       console.log(data.content.toString());
-      channel.ack(data, true); // se confirma que se procesa el mensaje
-    }, 
+      const message = data.content.toString();
+      console.log({message})
+      if (message && message === "default") {
+        channel.reject(data, false); // se confirma que dio error el mensaje
+      } else {
+        channel.ack(data, true); // se confirma que se procesa el mensaje
+      }
+    },
     {
       noAck: false // no procesar automaticamente el mensaje
     }
