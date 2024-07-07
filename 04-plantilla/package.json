@@ -6,7 +6,7 @@
   "scripts": {
     "minify": "gulp minify",
     "clean": "rimraf dist cache reports",
-    "build": "npm run clean & tsc & gulp minify",
+    "build": "npm run clean && tsc && npm run minify",
     "start:dev": "nodemon src/index.ts",
     "start": "node dist/src/index.js"
   },
