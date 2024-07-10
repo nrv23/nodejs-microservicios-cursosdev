@@ -1,14 +1,20 @@
 import { log } from "console";
-import { IBootstrap } from "./bootstrap.interface";
+import { BootstrapReturn, IBootstrap } from "./bootstrap.interface";
 import http from 'http';
+import { Application } from "express";
+import { Parameter } from "../core/parameter";
 export class Server implements IBootstrap {
-    init(): Promise<boolean | string> {
-        return new Promise((resolve,reject) => {
-            const port = process.env.PORT || 3000;
-            const server = http.createServer((request, response) => {
-                response.end("Hola mundo");
-            });
+    private app: Application;
+    private parameter: Parameter;
+    constructor(app: Application, param: Parameter) {
+        this.app = app;
+        this.parameter = param;
+    }
 
+    init(): Promise<BootstrapReturn> {
+        return new Promise((resolve,reject) => {
+            const port = this.parameter.port;
+            const server = http.createServer(this.app);
             server.listen(port).on("listening",() => { // evento que se ejecuta cuando el servidor esta escuchando
                 log(`Servidor escuchado en puerto ${port}` );
 
@@ -16,7 +22,7 @@ export class Server implements IBootstrap {
             })
             .on("error", error => {
                 log("hubo un error al escuchar peticiones en el servidor ", JSON.stringify({error}) );
-                reject(error.message);
+                reject(error);
             })
 
         });
