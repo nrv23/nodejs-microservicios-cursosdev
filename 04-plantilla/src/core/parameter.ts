@@ -5,7 +5,7 @@ export class Parameter {
     }
 
     get mysql_config() {
-
+        console.log({env: process.env})
         return {
             host: process.env.MYSQL_HOST,
             port: +process.env.MYSQL_PORT!,

@@ -23,6 +23,7 @@ const rabbitmqBootstrap = new RabbitmqBootstrap(params);
         await Promise.all(promiseArray);
         log("Mysql server started");
     } catch (error) {
+        console.log({error});
         server.close();
         mysqlBoostrap.close();
         await rabbitmqBootstrap.close()

@@ -54,6 +54,43 @@ services:
       start_period: 20s
     networks:
       - net-course
+  redis-server:
+    image: redis:6.0.5-alpine
+    container_name: redis-server
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    networks:
+      - net-course
+    command: redis-server --requirepass 12345
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 10s
+      retries: 3
+      start_period: 5s
+
+  redis-client:
+    image: rediscommander/redis-commander:latest
+    container_name: redis-client
+    restart: unless-stopped
+    ports:
+      - "8081:8081"
+    environment:
+      - REDIS_HOST=redis-server
+      - REDIS_PORT=6379
+      - REDIS_PASSWORD=12345
+    depends_on:
+      redis-server:
+        condition: service_healthy
+    networks:
+      - net-course
+    healthcheck:
+      test: ["CMD", "/redis-commander/bin/healthcheck.js"]
+      interval: 10s
+      timeout: 10s
+      retries: 3
+      start_period: 5s
   app: 
     build:
       context: . # carpeta raiz del proyecto

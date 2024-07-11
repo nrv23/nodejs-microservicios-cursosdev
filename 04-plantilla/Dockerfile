@@ -22,5 +22,6 @@ RUN apk add curl
 COPY --from=stage_deps /app/node_modules ./node_modules
 COPY --from=stage_build /app/dist ./dist
 COPY package.json .
+COPY .env   .
 USER node
 CMD npm run start
