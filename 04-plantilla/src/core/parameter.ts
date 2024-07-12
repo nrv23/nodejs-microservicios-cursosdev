@@ -23,4 +23,13 @@ export class Parameter {
     get rabbittmqHost() {
         return process.env.RABBITMQ_HOST!;
     }
+
+    get redisConfig() {
+        return {
+            host: process.env.REDIS_HOST!,
+            port: +process.env.REDIS_PORT!,
+            password: process.env.REDIS_PASSWORD!,
+            maxRetriesPerRequest: +process.env.REDIS_MAX_RETRIES_PER_REQUEST!,
+        };
+    }
 }

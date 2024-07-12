@@ -23,7 +23,7 @@ export class RabbitmqBootstrap implements IBootstrap {
         }
     }
 
-    async close() {
-        await this.connection?.close();
+    close() {
+        this.connection?.close();
     }
 }
