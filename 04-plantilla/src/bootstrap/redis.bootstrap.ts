@@ -21,7 +21,7 @@ export class RedisBootStrap implements IBootstrap {
                     resolve(true);
                 })
                 .on("error", error => {
-                    console.log({error})
+                    console.log({ error })
                     reject(error);
                 })
         })
@@ -36,4 +36,16 @@ export class RedisBootStrap implements IBootstrap {
         return this.redisClient;
     }
 
+    async set(key: string, value: string) {
+        await this.redisClient.set(key, value, "PX", 24 * 60 * 60 * 1000);
+    }
+
+    async get(key: string) {
+        return await this.redisClient.get(key);
+    }
+
+    async cleanByPrefix(prefix: string = "") {
+        const keys = await this.redisClient.keys(`${prefix}`);
+        if(keys.length > 0) await this.redisClient.del(...keys);
+    }    
 }
