@@ -1,4 +1,6 @@
+import { Entity } from "typeorm";
 
+@Entity({name: "Product"})
 export class ProductEntity {
     id: string;
     name: string;
