@@ -12,3 +12,6 @@ por tener el mismo routingkey
 el intercambiador de tipo topic es muy parecido al intercambiador de tipo fanout con la 
 diferencia que tiene la opcion de enviar varios argumentos al routingKey.
 El fanout tiene un routingkey donde envia solo a los que poseen ese routingkey
+
+Partial es un tipo de interfaz generica que permite que el tipo de interfaz generica 
+que se le pase tenga todas sus propiedades opcionales

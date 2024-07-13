@@ -1,3 +1,7 @@
+import { validate } from "uuid";
+
+
+
 export interface ProductEssentials {
     name: string;
     price: number;
@@ -26,6 +30,13 @@ export class Product {
     private deletedAt?: Date;
 
     constructor(product: ProductProperties) {
+
+        if(!validate(product.id)) throw new Error("Invalid id");
+        if(product.name.length < 3 ) throw new Error("Invalid name");
+        if(product.price < 1 ) throw new Error("Invalid price");
+        if(product.name.length < 10) throw new Error("Invalid description");
+        if(product.image.length < 5) throw new Error("Invalid image");
+
         Object.assign(this, product); // mapear propiedades con valores que cumplan con el tipo ProductProperties
         this.createdAt = new Date();
     }
