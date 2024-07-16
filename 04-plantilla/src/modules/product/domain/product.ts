@@ -34,7 +34,7 @@ export class Product {
         if(!validate(product.id)) throw new Error("Invalid id");
         if(product.name.length < 3 ) throw new Error("Invalid name");
         if(product.price < 1 ) throw new Error("Invalid price");
-        if(product.name.length < 10) throw new Error("Invalid description");
+        if(product.description.length < 10) throw new Error("Invalid description");
         if(product.image.length < 5) throw new Error("Invalid image");
 
         Object.assign(this, product); // mapear propiedades con valores que cumplan con el tipo ProductProperties
@@ -42,7 +42,16 @@ export class Product {
     }
 
     get properties() {
-        return { ...this };
+        return {
+            id: this.id,
+            name: this.name,
+            price: this.price,
+            description: this.description,
+            image: this.image,
+            createdAt: this.createdAt,
+            updatedAt: this.updatedAt,
+            deletedAt: this.deletedAt,
+          };
     }
 
     update(fieldsToUpdate: ProductUpdate) {
