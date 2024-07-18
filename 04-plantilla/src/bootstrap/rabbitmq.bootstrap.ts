@@ -1,29 +1,31 @@
+import amqp from "amqplib";
+
 import { Parameter } from "../core/parameter";
 import { BootstrapReturn, IBootstrap } from "./bootstrap.interface";
-import amqplib from 'amqplib';
+
 export class RabbitmqBootstrap implements IBootstrap {
+  static channel: amqp.Channel;
+  connection!: amqp.Connection;
 
-    channel!: amqplib.Channel;
-    connection!: amqplib.Connection;
-    constructor(private readonly parameters: Parameter) {
+  init(): Promise<BootstrapReturn> {
+    return new Promise(async (resolve, reject) => {
+      const host = Parameter.rabbitmq_host;
 
-    }
+      try {
+        const connection = await amqp.connect(`amqp://${host}`);
+        this.connection = connection;
+        RabbitmqBootstrap.channel = await connection.createChannel();
+        console.log("Rabbitmq initialized");
+        resolve(true);
+      } catch (error) {
+        console.log(`Error: ${error}`);
+        reject(error);
+      }
+    });
+  }
 
-    async init(): Promise<BootstrapReturn> {
-
-        try {
-     
-            const host = this.parameters.rabbittmqHost;
-            this.connection = await amqplib.connect(`amqp://${host}`);
-            this.channel = await this.connection.createChannel();
-            console.log("Rabbitmq initialized")
-            return Promise.resolve(true);
-        } catch (error) {
-            return Promise.reject(error);
-        }
-    }
-
-    close() {
-        this.connection?.close();
-    }
+  close() {
+    console.log("Closing rabbitmq");
+    this.connection?.close();
+  }
 }

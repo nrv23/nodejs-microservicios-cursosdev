@@ -1,40 +1,34 @@
-import {Request, Response, NextFunction} from 'express';
-import { RedisBootStrap } from '../../../bootstrap/redis.bootstrap';
-
+import { NextFunction, Request, Response } from "express";
+import { RedisBootstrap } from "src/bootstrap/redis.bootstrap";
 
 export class CacheMiddleware {
-
-    constructor(private readonly redisBootstrap: RedisBootStrap) {
-
+  private static setParams(key: string, params: Record<string, any>) {
+    if (params) {
+      Object.keys(params).forEach((param) => {
+        key = key.replace(`:${param}`, params[param]);
+      });
     }
+    return key;
+  }
 
-    private setParams(key: string, params: Record<string, any>) {
-        if(params) {
-            Object.keys(params).forEach(param => {
-                key = key.replace(`:${param}`,params[param]);
-            })
-        }
+  static build(prefix: string) {
+    return async (request: Request, response: Response, next: NextFunction) => {
+      let cacheKey = prefix;
+      cacheKey = this.setParams(cacheKey, request.params);
+      cacheKey = this.setParams(cacheKey, request.query);
+      cacheKey = this.setParams(cacheKey, request.body);
 
-        return key;
-    }
+      const client = RedisBootstrap.connection;
+      const value = await client.get(cacheKey);
 
-    build(prefix: string) {
-        return async (req: Request, res: Response, next: NextFunction) => {
-            let cachekey = prefix;
-            cachekey = this.setParams(cachekey,req.params);
-            cachekey = this.setParams(cachekey,req.query);
-            cachekey = this.setParams(cachekey,req.body);
+      if (value) {
+        console.log("Response from cache");
+        response.status(200).json(JSON.parse(value));
+        return;
+      }
 
-            const client = this.redisBootstrap.redisClientInstance;
-            const value = await client.get(cachekey);
-
-            if(value) {
-                console.log("Response from cache");
-                return res.json(JSON.parse(value));
-            }
-
-            console.log("Cache missed");
-            res.locals.cachekey = cachekey;
-        }
-    }
+      console.log("Cache missed");
+      response.locals.cacheKey = cacheKey;
+    };
+  }
 }

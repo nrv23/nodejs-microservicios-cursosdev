@@ -1,35 +1,33 @@
 import dotenv from "dotenv";
-import app from "./bootstrap/app";
-import { Server } from "./bootstrap/server.bootstrap";
-import { Parameter } from "./core/parameter";
+
+import app from "./app";
 import { MysqlBootstrap } from "./bootstrap/mysql.bootstrap";
-import { log } from "console";
 import { RabbitmqBootstrap } from "./bootstrap/rabbitmq.bootstrap";
-import { RedisBootStrap } from "./bootstrap/redis.bootstrap";
+import { RedisBootstrap } from "./bootstrap/redis.bootstrap";
+import { ServerBootstrap } from "./bootstrap/server.bootstrap";
 
 dotenv.config();
-const params = new Parameter();
-const server = new Server(app, params);
-const mysqlBoostrap = new MysqlBootstrap(params);
-const rabbitmqBootstrap = new RabbitmqBootstrap(params);
-const redisBootstrap = new RedisBootStrap(params);
+const serverBootstrap = new ServerBootstrap(app);
+const mysqlBootstrap = new MysqlBootstrap();
+const rabbitmqBootstrap = new RabbitmqBootstrap();
+const redisBootstrap = new RedisBootstrap();
 
-(async ()=>{
+(async () => {
+  try {
+    const listPromises = [];
+    listPromises.push(serverBootstrap.init());
+    listPromises.push(mysqlBootstrap.init());
+    listPromises.push(rabbitmqBootstrap.init());
+    listPromises.push(redisBootstrap.init());
 
-    try {        
-        const promiseArray = [];
-        promiseArray.push(server.init());
-        promiseArray.push(mysqlBoostrap.init());
-        promiseArray.push(rabbitmqBootstrap.init());
-        promiseArray.push(redisBootstrap.init());
+    await Promise.all(listPromises);
 
-        await Promise.all(promiseArray);
-        log("Mysql server started");
-    } catch (error) {
-        console.log({error});
-        server.close();
-        mysqlBoostrap.close();
-        rabbitmqBootstrap.close();
-        redisBootstrap.close();
-    }
-}) ()
+    console.log("Servers initialized");
+  } catch (error) {
+    console.log(error);
+    serverBootstrap.close();
+    mysqlBootstrap.close();
+    rabbitmqBootstrap.close();
+    redisBootstrap.close();
+  }
+})();

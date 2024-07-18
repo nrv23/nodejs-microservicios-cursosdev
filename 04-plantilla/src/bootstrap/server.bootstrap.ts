@@ -1,34 +1,38 @@
-import { log } from "console";
-import { BootstrapReturn, IBootstrap } from "./bootstrap.interface";
-import http from 'http';
 import { Application } from "express";
+import http from "http";
+
 import { Parameter } from "../core/parameter";
-export class Server implements IBootstrap {
-    private app: Application;
-    private parameter: Parameter;
-    constructor(app: Application, param: Parameter) {
-        this.app = app;
-        this.parameter = param;
-    }
 
-    init(): Promise<BootstrapReturn> {
-        return new Promise((resolve,reject) => {
-            const port = this.parameter.port;
-            const server = http.createServer(this.app);
-            server.listen(port).on("listening",() => { // evento que se ejecuta cuando el servidor esta escuchando
-                log(`Servidor escuchado en puerto ${port}` );
+import { BootstrapReturn, IBootstrap } from "./bootstrap.interface";
 
-                resolve(true);
-            })
-            .on("error", error => {
-                log("hubo un error al escuchar peticiones en el servidor ", JSON.stringify({error}) );
-                reject(error);
-            })
+export class ServerBootstrap implements IBootstrap {
+  private app: Application;
 
+  constructor(app: Application) {
+    this.app = app;
+  }
+
+  init(): Promise<BootstrapReturn> {
+    return new Promise((resolve, reject) => {
+      const server = http.createServer(this.app);
+
+      const port = Parameter.port;
+
+      server
+        .listen(port)
+        .on("listening", () => {
+          console.log(`Server running on port ${port}`);
+          resolve(true);
+        })
+        .on("error", (error: Error) => {
+          console.log(`Error: ${error.message}`);
+          reject(error);
         });
-    }
+    });
+  }
 
-    close() {
-        process.exit(0); // termina el proceso de ejecucion del servidor de Node
-    }
+  close() {
+    console.log("Closing server");
+    process.exit(0);
+  }
 }
