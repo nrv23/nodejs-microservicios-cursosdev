@@ -4,6 +4,7 @@ import http from "http";
 import { Parameter } from "../core/parameter";
 
 import { BootstrapReturn, IBootstrap } from "./bootstrap.interface";
+import { swaggerDoc as v1SwaggerDocs } from "../swagger";
 
 export class ServerBootstrap implements IBootstrap {
   private app: Application;
@@ -22,6 +23,7 @@ export class ServerBootstrap implements IBootstrap {
         .listen(port)
         .on("listening", () => {
           console.log(`Server running on port ${port}`);
+          v1SwaggerDocs(this.app, port)
           resolve(true);
         })
         .on("error", (error: Error) => {

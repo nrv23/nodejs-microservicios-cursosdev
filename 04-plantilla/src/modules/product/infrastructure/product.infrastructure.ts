@@ -21,10 +21,7 @@ export class ProductInfrastructure implements ProductRepository {
       await repository.save(productEntity);
       return ok(undefined);
     } catch (error) {
-      console.log(error);
-      const errobj = new Error();
-      errobj.message = (error as Error).message;
-      return err(errobj);
+      return this.handleError(error);
     }
   }
   async findById(id: string): Promise<ProductFoundById> {
@@ -39,10 +36,7 @@ export class ProductInfrastructure implements ProductRepository {
 
       return ok(ProductDto.fromDataToDomain(productEntity) as Product);
     } catch (error) {
-      console.log(error);
-      const errobj = new Error();
-      errobj.message = (error as Error).message;
-      return err(errobj);
+      return this.handleError(error); 
     }
   }
 
@@ -55,13 +49,10 @@ export class ProductInfrastructure implements ProductRepository {
       if (!products) {
         return ok(null);
       }
-
+      // ok es donde se carga la respuesta
       return ok(ProductDto.fromDataToDomain(products) as Product[]);
     } catch (error) {
-      console.log(error);
-      const errobj = new Error();
-      errobj.message = (error as Error).message;
-      return err(errobj);
+      return this.handleError(error);
     }
   }
 
@@ -81,10 +72,15 @@ export class ProductInfrastructure implements ProductRepository {
       const productsDomain = ProductDto.fromDataToDomain(products) as Product[];
       return ok([productsDomain, count]);
     } catch (error) {
-      console.log(error);
-      const errobj = new Error();
-      errobj.message = (error as Error).message;
-      return err(errobj);
+      return this.handleError(error);
     }
+  }
+
+  private handleError(error: any) {
+    console.log(error);
+    const errobj = new Error();
+    errobj.message = (error as Error).message;
+    // funcion err donde devuelve el error sin crear una excepcion
+    return err(errobj);
   }
 }
