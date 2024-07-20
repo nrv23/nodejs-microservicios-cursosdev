@@ -7,12 +7,29 @@ import { UserRepository } from "../domain/repositories/user";
 import { UserDto } from "./dtos/user.dto";
 import { UserEntity } from "./entities/user.entity";
 
-export type UserFoundById = Result<User | null, Error>;
+export type UserFoundByIdOrEmail = Result<User | null, Error>;
 export type UserFound = Result<User[] | null, Error>;
 export type UserByPage = Result<[User[], number] | null, Error>;
 export type UserSaved = Result<void, Error>;
 
 export class UserInfrastructure implements UserRepository {
+
+  async getByEmail(email: string): Promise<UserFoundByIdOrEmail> {
+    try {
+      const repository = MysqlBootstrap.dataSource.getRepository(UserEntity);
+      const productEntity = await repository.findOne({
+        where: { email, deletedAt: IsNull() },
+      });
+      if (!productEntity) {
+        return ok(null);
+      }
+
+      return ok(UserDto.fromDataToDomain(productEntity) as User);
+    } catch (error) {
+      return this.handleError(error);
+    }
+  }
+
   async save(product: User): Promise<UserSaved> {
     try {
       const repository = MysqlBootstrap.dataSource.getRepository(UserEntity);
@@ -24,7 +41,7 @@ export class UserInfrastructure implements UserRepository {
       return this.handleError(error);
     }
   }
-  async findById(id: string): Promise<UserFoundById> {
+  async findById(id: string): Promise<UserFoundByIdOrEmail> {
     try {
       const repository = MysqlBootstrap.dataSource.getRepository(UserEntity);
       const productEntity = await repository.findOne({
@@ -36,7 +53,7 @@ export class UserInfrastructure implements UserRepository {
 
       return ok(UserDto.fromDataToDomain(productEntity) as User);
     } catch (error) {
-      return this.handleError(error); 
+      return this.handleError(error);
     }
   }
 
@@ -45,6 +62,7 @@ export class UserInfrastructure implements UserRepository {
       const repository = MysqlBootstrap.dataSource.getRepository(UserEntity);
       const products = await repository.find({
         where: { deletedAt: IsNull() },
+        relations: ["roles"]
       });
       if (!products) {
         return ok(null);

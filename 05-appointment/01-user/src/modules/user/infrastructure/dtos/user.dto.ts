@@ -14,9 +14,10 @@ export class UserDto {
     userEntity.createdAt = props.createdAt;
     userEntity.updatedAt = props.updatedAt;
     userEntity.deletedAt = props.deletedAt;
+    userEntity.refreshToken = props.refreshToken;
     userEntity.roles = props.roles.map((rol: any) => {
       const roleEntity = new RoleEntity();
-      roleEntity.id = rol.id;
+      roleEntity.id = rol;
       return roleEntity;
     })
     return userEntity;

@@ -2,7 +2,7 @@ import { User, UserProperties } from "../domain/user";
 import { UserRepository } from "../domain/repositories/user";
 
 export class UserApplication {
-  constructor(private readonly repository: UserRepository) {}
+  constructor(private readonly repository: UserRepository) { }
 
   async save(product: User) {
     await this.repository.save(product);
@@ -48,6 +48,15 @@ export class UserApplication {
 
   async getByPage(page: number, pageSize: number) {
     const result = await this.repository.getByPage(page, pageSize);
+    if (result.isErr()) {
+      return;
+    }
+
+    return result.value;
+  }
+
+  async getByEmail(email: string) {
+    const result = await this.repository.getByEmail(email);
     if (result.isErr()) {
       return;
     }

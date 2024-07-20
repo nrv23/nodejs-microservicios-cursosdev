@@ -10,9 +10,9 @@ export class UserController {
   async insert(req: Request, res: Response, next: NextFunction) {
     const body = req.body;
     const id = uuidv4();
-
+    const refreshToken = uuidv4();
     const productProperties: UserProperties = body;
-    const product = new User({ ...productProperties, id });
+    const product = new User({ ...productProperties, id, refreshToken });
 
     await this.application.save(product);
 
