@@ -1,11 +1,16 @@
 import { User, UserProperties } from "../domain/user";
 import { UserRepository } from "../domain/repositories/user";
+import { BcryptService } from "../../../core/application/service/bcrypt.service";
 
 export class UserApplication {
-  constructor(private readonly repository: UserRepository) { }
+  constructor(
+    private readonly repository: UserRepository,
+    private readonly bcryptService: BcryptService) { }
 
-  async save(product: User) {
-    await this.repository.save(product);
+  async save(user: User) {
+    const password = await this.bcryptService.hashPass(user.properties().password);
+    user.update({ password });
+    await this.repository.save(user);
   }
 
   async delete(id: string) {
@@ -13,9 +18,9 @@ export class UserApplication {
     if (result.isErr()) {
       return;
     }
-    const product = result.value;
-    product.delete();
-    return await this.repository.save(product);
+    const user = result.value;
+    user.delete();
+    return await this.repository.save(user);
   }
 
   async update(fields: UserProperties, id: string) {
@@ -23,9 +28,11 @@ export class UserApplication {
     if (result.isErr()) {
       return;
     }
-    const product = result.value;
-    product.update(fields);
-    await this.repository.save(product);
+
+    console.log({ result });
+    const user = result.value;
+    user.update(fields);
+    await this.repository.save(user);
   }
 
   async findById(id: string) {

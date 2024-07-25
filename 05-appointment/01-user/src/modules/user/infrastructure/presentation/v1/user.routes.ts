@@ -4,9 +4,11 @@ import { UserApplication } from "../../../application/user.application";
 import { UserRepository } from "../../../domain/repositories/user";
 import { UserInfrastructure } from "../../user.infrastructure";
 import { UserController } from "./user.controller";
+import { BcryptService } from "../../../../../core/application/service/bcrypt.service";
 
+const bcryptService: BcryptService = new BcryptService();
 const repository: UserRepository = new UserInfrastructure();
-const application = new UserApplication(repository);
+const application = new UserApplication(repository, bcryptService);
 const controller = new UserController(application);
 
 class UserRoute {
