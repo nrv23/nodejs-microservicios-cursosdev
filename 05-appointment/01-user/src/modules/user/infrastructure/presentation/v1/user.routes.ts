@@ -18,8 +18,8 @@ class UserRoute {
   }
 
   addRoutes() {
-    this.router.post("/", controller.insert.bind(controller));
-    this.router.get("/", controller.get.bind(controller));
+    this.router.post("/", controller.insert);
+    this.router.get("/", controller.get);
 
     /**
      * @openapi
@@ -37,10 +37,10 @@ class UserRoute {
      *          schema:
      *           $ref: '#/components/schemas/Error'
      */
-    this.router.get("/page", controller.getByPage.bind(controller));
-    this.router.get("/:id", controller.getById.bind(controller));
-    this.router.put("/:id", controller.update.bind(controller));
-    this.router.delete("/:id", controller.delete.bind(controller));
+    this.router.get("/page", controller.getByPage);
+    this.router.get("/:id", controller.getById);
+    this.router.put("/:id", controller.update);
+    this.router.delete("/:id", controller.delete);
   }
 
   getRouter(): Router {
