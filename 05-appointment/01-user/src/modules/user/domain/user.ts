@@ -38,7 +38,7 @@ export class User {
     if (user.name.length < 3) throw new Error("Invalid name");
     if (user.lastname.length < 3) throw new Error("Invalid lastname");
     if (!emailRegex.test(user.email)) throw new Error("Invalid email");
-    if (!passwordRegex.test(user.password)) throw new Error("Invalid password");
+    //if (!passwordRegex.test(user.password)) throw new Error("Invalid password");
     if(user.roles.length === 0) throw new Error("El usuario debe tener al menos un rol");
     if(!validate(user.refreshToken)) throw new Error("Invalid refresh token");
 

@@ -26,6 +26,7 @@ export class UserDto {
   static fromDataToDomain(
     data: UserEntity | UserEntity[]
   ): User | User[] {
+   
     if (Array.isArray(data)) {
       return data.map((item) => this.fromDataToDomain(item)) as User[];
     }

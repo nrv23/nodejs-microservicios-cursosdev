@@ -3,6 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 import { UserApplication } from '../../../application/user.application';
 import { User, UserProperties } from '../../../domain/user';
+import { UserResponseDto } from '../../../../../modules/user/application/dto/user-response.dto';
 
 export class UserController {
   constructor(private readonly application: UserApplication) { }
@@ -37,13 +38,16 @@ export class UserController {
     const pageSize = parseInt(req.query.pageSize as string);
 
     const result = await this.application.getByPage(page, pageSize);
+    
     if (!result) {
       res.status(204).send();
       return;
     }
     const [users, count] = result;
 
-    res.status(200).json({ data: users, count, page, pageSize });
+    const data = UserResponseDto.fromDomainToResponse(users);
+
+    res.status(200).json({ data, count, page, pageSize });
   }
 
   update = async (req: Request, res: Response, next: NextFunction) => {

@@ -1,6 +1,7 @@
 import { User, UserProperties } from "../domain/user";
 import { UserRepository } from "../domain/repositories/user";
 import { BcryptService } from "../../../core/application/service/bcrypt.service";
+import { UserResponseDto } from "./dto/user-response.dto";
 
 export class UserApplication {
   constructor(
@@ -41,7 +42,7 @@ export class UserApplication {
       return;
     }
 
-    return result.value;
+    return UserResponseDto.fromDomainToResponse(result.value);
   }
 
   async find() {
@@ -49,8 +50,7 @@ export class UserApplication {
     if (result.isErr()) {
       return;
     }
-
-    return result.value;
+    return UserResponseDto.fromDomainToResponse(result.value);
   }
 
   async getByPage(page: number, pageSize: number) {

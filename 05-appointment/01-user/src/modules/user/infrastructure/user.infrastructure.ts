@@ -61,15 +61,16 @@ export class UserInfrastructure implements UserRepository {
   async find(): Promise<UserFound> {
     try {
       const repository = MysqlBootstrap.dataSource.getRepository(UserEntity);
-      const products = await repository.find({
+      const users = await repository.find({
         where: { deletedAt: IsNull() },
         relations: ["roles"]
       });
-      if (!products) {
+      console.log({users})
+      if (!users) {
         return ok(null);
       }
       // ok es donde se carga la respuesta
-      return ok(UserDto.fromDataToDomain(products) as User[]);
+      return ok(UserDto.fromDataToDomain(users) as User[]);
     } catch (error) {
       return this.handleError(error);
     }
@@ -77,19 +78,22 @@ export class UserInfrastructure implements UserRepository {
 
   async getByPage(page: number, pageSize: number): Promise<UserByPage> {
     try {
+
+      console.log({page,pageSize});
       const repository = MysqlBootstrap.dataSource.getRepository(UserEntity);
-      const [products, count] = await repository.findAndCount({
+      const [user, count] = await repository.findAndCount({
         where: { deletedAt: IsNull() },
         relations: ["roles"],
         skip: (page - 1) * pageSize,
         take: pageSize,
       });
 
-      if (!products) {
+      if (!user) {
         return ok(null);
       }
+      
 
-      const productsDomain = UserDto.fromDataToDomain(products) as User[];
+      const productsDomain = UserDto.fromDataToDomain(user) as User[];
       return ok([productsDomain, count]);
     } catch (error) {
       return this.handleError(error);
