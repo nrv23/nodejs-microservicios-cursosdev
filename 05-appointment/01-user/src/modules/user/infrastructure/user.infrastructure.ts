@@ -46,6 +46,7 @@ export class UserInfrastructure implements UserRepository {
       const repository = MysqlBootstrap.dataSource.getRepository(UserEntity);
       const productEntity = await repository.findOne({
         where: { id, deletedAt: IsNull() },
+        relations: ["roles"]
       });
       if (!productEntity) {
         return ok(null);
@@ -79,6 +80,7 @@ export class UserInfrastructure implements UserRepository {
       const repository = MysqlBootstrap.dataSource.getRepository(UserEntity);
       const [products, count] = await repository.findAndCount({
         where: { deletedAt: IsNull() },
+        relations: ["roles"],
         skip: (page - 1) * pageSize,
         take: pageSize,
       });

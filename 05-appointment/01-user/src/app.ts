@@ -17,7 +17,7 @@ class App {
   }
 
   handleRoutes() {
-    this.expressApp.use("/product/v1", UserRoutes);
+    this.expressApp.use("/v1/user", UserRoutes);
   }
 
   handleHealthcheck() {
