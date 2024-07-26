@@ -1,5 +1,5 @@
 import { User, UserProperties } from "../domain/auth";
-import { UserRepository } from "../domain/repositories/user";
+import { UserRepository } from "../domain/repositories/auth.repository";
 import { BcryptService } from "../../../core/application/service/bcrypt.service";
 import { UserResponseDto } from "./dto/user-response.dto";
 

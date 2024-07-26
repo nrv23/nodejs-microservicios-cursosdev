@@ -1,8 +1,8 @@
 import { Router } from "express";
 
 import { UserApplication } from "../../../application/user.application";
-import { UserRepository } from "../../../domain/repositories/user";
-import { UserInfrastructure } from "../../user.infrastructure";
+import { UserRepository } from "../../../domain/repositories/auth.repository";
+import { UserInfrastructure } from "../../auth.infrastructure";
 import { UserController } from "./user.controller";
 import { BcryptService } from "../../../../../core/application/service/bcrypt.service";
 

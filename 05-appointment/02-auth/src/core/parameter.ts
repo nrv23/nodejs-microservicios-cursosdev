@@ -17,8 +17,14 @@ export class Parameter {
       logging: Boolean(process.env.MYSQL_LOGGING) || true,
       poolSize: Number(process.env.MYSQL_POOL_SIZE) || 10,
       maxQueryExecutionTime:
-        Number(process.env.MYSQL_MAX_QUERY_EXECUTION_TIME) || 10000,
+        Number(process.env.MYSQL_MAX_QUERY_EXECUTION_TIME) || 10000
+      
     };
+  }
+  static get server_config() {
+    return {
+      apiGetUser: process.env.API_GET_USER
+    }
   }
 
   static get redis_config() {
