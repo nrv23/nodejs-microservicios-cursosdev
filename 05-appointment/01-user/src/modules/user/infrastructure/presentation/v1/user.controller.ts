@@ -63,9 +63,7 @@ export class UserController {
 
   delete = async (req: Request, res: Response, next: NextFunction) => {
     const id = req.params.id;
-
     await this.application.delete(id);
-
     res.status(204).send();
   }
 }

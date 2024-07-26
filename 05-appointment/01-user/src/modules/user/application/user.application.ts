@@ -19,6 +19,7 @@ export class UserApplication {
     if (result.isErr()) {
       return;
     }
+    if(!result.value) return;
     const user = result.value;
     user.delete();
     return await this.repository.save(user);
@@ -29,8 +30,6 @@ export class UserApplication {
     if (result.isErr()) {
       return;
     }
-
-    console.log({ result });
     const user = result.value;
     user.update(fields);
     await this.repository.save(user);
