@@ -17,14 +17,16 @@ export class UserInfrastructure implements UserRepository {
   async getByEmail(email: string): Promise<UserFoundByIdOrEmail> {
     try {
       const repository = MysqlBootstrap.dataSource.getRepository(UserEntity);
-      const productEntity = await repository.findOne({
+      const userEntity = await repository.findOne({
         where: { email, deletedAt: IsNull() },
+        relations: ["roles"]
       });
-      if (!productEntity) {
+
+      if (!userEntity) {
         return ok(null);
       }
 
-      return ok(UserDto.fromDataToDomain(productEntity) as User);
+      return ok(UserDto.fromDataToDomain(userEntity) as User);
     } catch (error) {
       return this.handleError(error);
     }

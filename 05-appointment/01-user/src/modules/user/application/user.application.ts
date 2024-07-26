@@ -66,7 +66,8 @@ export class UserApplication {
     if (result.isErr()) {
       return;
     }
-
-    return result.value;
+    
+    if(!result.value) return;
+    return UserResponseDto.fromDomainToResponse(result.value);
   }
 }

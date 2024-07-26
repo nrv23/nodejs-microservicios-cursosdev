@@ -28,6 +28,17 @@ export class UserController {
     res.status(200).json(product);
   }
 
+  
+  getByEmail = async (req: Request, res: Response, next: NextFunction) => {
+
+    const {
+      email
+    } : { email: string  }= req.body;
+
+    const product = await this.application.getByEmail(email);
+    res.status(200).json(product);
+  }
+
   get = async (req: Request, res: Response, next: NextFunction) => {
     const users = await this.application.find();
     res.status(200).json(users);
