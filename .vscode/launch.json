@@ -1,0 +1,14 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "type": "node",
+        "request": "launch",
+        "name": "App microservicios - User",
+        "skipFiles": ["<node_internals>/**"],
+        "program": "${workspaceFolder}/05-appointment/01-user/src/index.ts",
+        "runtimeArgs": ["-r", "${workspaceFolder}/05-appointment/01-user/node_modules/ts-node/register"],
+        "outFiles": ["${workspaceFolder}/05-appointment/01-user/dist/**/*.js"]
+      }
+    ]
+  }

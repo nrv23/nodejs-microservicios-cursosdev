@@ -15,3 +15,6 @@ El fanout tiene un routingkey donde envia solo a los que poseen ese routingkey
 
 Partial es un tipo de interfaz generica que permite que el tipo de interfaz generica 
 que se le pase tenga todas sus propiedades opcionales
+
+Los dtos si pueden ser clases estatticas, pero adaptadores o servicios o providers deben ser 
+inyecciones de dependencias
