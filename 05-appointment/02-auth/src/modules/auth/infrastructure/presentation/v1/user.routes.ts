@@ -1,6 +1,6 @@
 import { Router } from "express";
 
-import { UserApplication } from "../../../application/user.application";
+import { UserApplication } from "../../../application/auth.application";
 import { UserRepository } from "../../../domain/repositories/auth.repository";
 import { UserInfrastructure } from "../../auth.infrastructure";
 import { UserController } from "./user.controller";

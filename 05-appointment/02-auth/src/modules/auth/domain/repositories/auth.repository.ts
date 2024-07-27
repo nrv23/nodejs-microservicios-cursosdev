@@ -1,3 +1,4 @@
+import { AuthFindByEmail } from "../../infrastructure/auth.infrastructure";
 
 export type AuthTokens = {
   access_token: string;
@@ -6,6 +7,6 @@ export type AuthTokens = {
 
 export interface AuthRepository {
 
-    getUserByEmail(email: string): Promise<any>;
+    getUserByEmail(email: string): Promise<AuthFindByEmail>;
 
 }

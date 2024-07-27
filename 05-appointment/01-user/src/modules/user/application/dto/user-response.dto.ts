@@ -7,12 +7,12 @@ export class UserResponse  {
     lastname: string;
     email: string;
     roles: number[];
+    password?: string;
 }
 
 export class UserResponseDto {
     
-    static fromDomainToResponse(user: User | User[]): UserResponse | UserResponse[] {
-        console.log({user})
+    static fromDomainToResponse(user: User | User[], includePassword: boolean = false): UserResponse | UserResponse[] {
         if(Array.isArray(user)) return user.map(item => this.fromDomainToResponse(item)) as UserResponse[];
 
         const props = user.properties();
@@ -23,6 +23,7 @@ export class UserResponseDto {
         userResponse.lastname = props.lastname;
         userResponse.email = props.email;
         userResponse.roles = props.roles;
+        if(includePassword) userResponse.password = props.password
 
         return userResponse
     }

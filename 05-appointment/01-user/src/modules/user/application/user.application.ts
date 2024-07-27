@@ -40,7 +40,7 @@ export class UserApplication {
     if (result.isErr()) {
       return;
     }
-
+    if(!result.value) return;
     return UserResponseDto.fromDomainToResponse(result.value);
   }
 
@@ -68,6 +68,6 @@ export class UserApplication {
     }
     
     if(!result.value) return;
-    return UserResponseDto.fromDomainToResponse(result.value);
+    return UserResponseDto.fromDomainToResponse(result.value,true);
   }
 }

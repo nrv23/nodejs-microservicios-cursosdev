@@ -23,7 +23,8 @@ export class Parameter {
   }
   static get server_config() {
     return {
-      apiGetUser: process.env.API_GET_USER
+      apiGetUser: process.env.API_GET_USER,
+      jwtSecretKey: process.env.JWT_SECRET_KEY
     }
   }
 

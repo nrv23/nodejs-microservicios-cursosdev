@@ -32,10 +32,10 @@ export class UserInfrastructure implements UserRepository {
     }
   }
 
-  async save(product: User): Promise<UserSaved> {
+  async save(user: User): Promise<UserSaved> {
     try {
       const repository = MysqlBootstrap.dataSource.getRepository(UserEntity);
-      const productEntity = UserDto.fromDomainToData(product);
+      const productEntity = UserDto.fromDomainToData(user);
 
       await repository.save(productEntity);
       return ok(undefined);
@@ -67,7 +67,7 @@ export class UserInfrastructure implements UserRepository {
         where: { deletedAt: IsNull() },
         relations: ["roles"]
       });
-      console.log({users})
+
       if (!users) {
         return ok(null);
       }
@@ -81,7 +81,6 @@ export class UserInfrastructure implements UserRepository {
   async getByPage(page: number, pageSize: number): Promise<UserByPage> {
     try {
 
-      console.log({page,pageSize});
       const repository = MysqlBootstrap.dataSource.getRepository(UserEntity);
       const [user, count] = await repository.findAndCount({
         where: { deletedAt: IsNull() },
@@ -94,7 +93,6 @@ export class UserInfrastructure implements UserRepository {
         return ok(null);
       }
       
-
       const productsDomain = UserDto.fromDataToDomain(user) as User[];
       return ok([productsDomain, count]);
     } catch (error) {

@@ -35,8 +35,8 @@ export class UserController {
       email
     } : { email: string  }= req.body;
 
-    const product = await this.application.getByEmail(email);
-    res.status(200).json(product);
+    const user = await this.application.getByEmail(email);
+    res.status(200).json(user);
   }
 
   get = async (req: Request, res: Response, next: NextFunction) => {

@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { v4 as uuidv4 } from 'uuid';
 
-import { UserApplication } from '../../../application/user.application';
+import { UserApplication } from '../../../application/auth.application';
 import { User, UserProperties } from '../../../domain/auth';
 import { UserResponseDto } from '../../../../../modules/user/application/dto/user-response.dto';
 
