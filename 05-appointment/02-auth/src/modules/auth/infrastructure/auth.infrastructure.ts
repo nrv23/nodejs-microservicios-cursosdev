@@ -1,8 +1,8 @@
 import { HttpClientService } from "src/core/application/service/http-client.service";
 import { AuthRepository } from "../domain/repositories/auth.repository";
-import { Parameter } from "src/core/parameter";
+import { Parameter } from "./../../../core/parameter";
 import { AxiosError } from "axios";
-import { AuthDto, AuthUser } from "./dtos/user.dto";
+import { AuthDto, AuthUser } from "./dtos/auth.dto";
 import { Result, err, ok } from "neverthrow";
 
 export type AuthFindByEmail = Result<AuthUser, Error>;

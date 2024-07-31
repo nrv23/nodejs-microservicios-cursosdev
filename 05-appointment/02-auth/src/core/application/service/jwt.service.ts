@@ -1,5 +1,5 @@
 import { sign } from 'jsonwebtoken';
-import { Parameter } from 'src/core/parameter';
+import { Parameter } from './../../../core/parameter';
 
 export interface TokenPayload {
     name: string;

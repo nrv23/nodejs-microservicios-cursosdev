@@ -8,6 +8,7 @@ export class UserResponse  {
     email: string;
     roles: number[];
     password?: string;
+    refreshToken: string;
 }
 
 export class UserResponseDto {
@@ -23,7 +24,10 @@ export class UserResponseDto {
         userResponse.lastname = props.lastname;
         userResponse.email = props.email;
         userResponse.roles = props.roles;
-        if(includePassword) userResponse.password = props.password
+        if(includePassword) {
+            userResponse.password = props.password;
+            userResponse.refreshToken = props.refreshToken;
+        }
 
         return userResponse
     }

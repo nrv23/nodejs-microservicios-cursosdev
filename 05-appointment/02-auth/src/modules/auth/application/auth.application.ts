@@ -1,9 +1,11 @@
 import { IError } from "src/core/utils/ierror.interface";
 import { Auth } from "../domain/auth";
-import { AuthRepository } from "../domain/repositories/auth.repository";
-import { err } from "neverthrow";
+import { AuthRepository, AuthTokens } from '../domain/repositories/auth.repository';
+import { err, Result,ok } from "neverthrow";
 import { BcryptService } from "./../../../core/application/service/bcrypt.service";
 import { JwtService } from "./../../../core/application/service/jwt.service";
+
+export type AuthLogin = Result<AuthTokens,IError>;
 
 export class AuthApplication {
 
@@ -14,10 +16,12 @@ export class AuthApplication {
 
   }
 
-  async login(auth: Auth) {
-
+  async login(auth: Auth) : Promise<AuthLogin>{
+    console.log({
+      authapp: auth
+    })
     const userResult = await this.authRepository.getUserByEmail(auth.properties.email);
-
+    console.log({userResult})
     if (userResult.isErr()) {
       const error: IError = new Error(userResult.error.message);
       error.status = 404;
@@ -33,9 +37,11 @@ export class AuthApplication {
       error.status = 401;
       return err(error);
     } 
+    const response: AuthTokens = {
+      access_token: this.jwtService.generateAccessToken(rest),
+      refreshToken: rest.refreshToken
+    }
 
-    const token = this.jwtService.generateAccessToken(rest);
-    
-    
+    return ok(response);
   }
 }

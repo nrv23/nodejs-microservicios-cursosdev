@@ -7,6 +7,7 @@ export class AuthUser {
   email: string;
   roles: number[];
   password: string;
+  refreshToken: string;
 }
 
 export class AuthDto {
@@ -19,6 +20,7 @@ export class AuthDto {
     authUser.email = auth.email;
     authUser.roles = auth.roles;
     authUser.password = auth.password;
+    authUser.refreshToken = auth.refreshToken;
     return authUser;
   }
 }

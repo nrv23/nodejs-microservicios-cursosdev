@@ -1,6 +1,6 @@
 import express, { Application } from "express";
 
-import UserRoutes from "./modules/user/infrastructure/presentation/v1/user.routes";
+import AuthRoutes from "./modules/auth/infrastructure/presentation/v1/auth.routes";
 
 class App {
   private readonly expressApp: Application;
@@ -17,7 +17,7 @@ class App {
   }
 
   handleRoutes() {
-    this.expressApp.use("/v1/user", UserRoutes);
+    this.expressApp.use("/v1/auth", AuthRoutes);
   }
 
   handleHealthcheck() {
