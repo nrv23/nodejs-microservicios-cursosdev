@@ -18,3 +18,13 @@ que se le pase tenga todas sus propiedades opcionales
 
 Los dtos si pueden ser clases estatticas, pero adaptadores o servicios o providers deben ser 
 inyecciones de dependencias
+
+Llevo el curso en la sexta clase, tiempo 2:01:09
+
+Patron corto circuito.
+
+usa 3 estados OPEN, CLOSE y HALF-OPEN 
+CLOSE: indica que se puede hacer la solicitud correctamente 
+OPEN: Se cierra la conexion con el servicio
+HALF-OPEN: Se abre por un tiempo mientras el servicio a consultar se reestablece, y se lleva un contador de solicitudes
+enviadas para ver hasta cuantas que generen error cambien el estado a OPEN para devoelver un error por defecto
