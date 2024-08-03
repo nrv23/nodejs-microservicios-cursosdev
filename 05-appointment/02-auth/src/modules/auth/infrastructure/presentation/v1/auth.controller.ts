@@ -17,7 +17,10 @@ export class AuthController  {
     const response = await this.authApplication.login(auth);
 
     if(response.isErr()){
-      return res.status(+response.error.status).json(response.error);
+      const { status = 500, message } = response.error;
+      return res.status(+status).json({
+        message
+      });
     }
     
     res.status(200).json(response.value);

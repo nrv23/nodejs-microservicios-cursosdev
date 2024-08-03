@@ -9,14 +9,12 @@ import { IOptions, TRequest, UserByEmailCircuitBreakerService } from "./services
 export type AuthFindByEmail = Result<AuthUser, Error>;
 
 function executeCircuitBreakerService(request:TRequest, options: IOptions) {
-  const service = new UserByEmailCircuitBreakerService(request, options);
+  const service = UserByEmailCircuitBreakerService.getInstance(request,options);
   return service;
-
 }
 
 export class AuthInfrastructure implements AuthRepository {
 
-  private service: UserByEmailCircuitBreakerService;
   constructor(private readonly httpClientService: HttpClientService ) {
 
   }
@@ -41,7 +39,6 @@ export class AuthInfrastructure implements AuthRepository {
   }
 
   private handleError(error: any) {
-    console.log(error);
     const errobj = new Error();
     errobj.message = (error as Error).message;
     // funcion err donde devuelve el error sin crear una excepcion

@@ -17,14 +17,11 @@ export class AuthApplication {
   }
 
   async login(auth: Auth) : Promise<AuthLogin>{
-    console.log({
-      authapp: auth
-    })
+    
     const userResult = await this.authRepository.getUserByEmail(auth.properties.email);
-    console.log({userResult})
     if (userResult.isErr()) {
       const error: IError = new Error(userResult.error.message);
-      error.status = 404;
+      error.status = error.status || 500;
       return err(error);
     }
     // comparar contraseña
