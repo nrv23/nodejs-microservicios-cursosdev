@@ -1,3 +1,4 @@
+import { v4 as uuidv } from 'uuid';
 
 export enum TCountry {
     CO = "CO",
@@ -19,6 +20,7 @@ export interface AppointmentEssentials {
 export type AppointmentProps = AppointmentEssentials;
 
 export class Appointment {
+    private readonly id: string;
     private readonly name: string;
     private readonly lastname: string;
     private readonly email: string;
@@ -39,11 +41,13 @@ export class Appointment {
         if (!props.specialtyId || isNaN(props.specialtyId)) throw new Error("Invalid specialtyId");
 
         Object.assign(this, props);
+        this.id = uuidv()
 
     }
 
     get properties() {
         return {
+            id: this.id,
             name: this.name,
             lastname: this.lastname,
             email: this.email,
