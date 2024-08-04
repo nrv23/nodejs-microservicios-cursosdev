@@ -1,73 +1,19 @@
-import { User, UserProperties } from "../domain/appointment";
-import { UserRepository } from "../domain/repositories/appointment.repository";
-import { BcryptService } from "../../../core/application/service/bcrypt.service";
-import { UserResponseDto } from "./dto/appointment-response.dto";
+import { AppointmentRepository } from '../domain/repositories/appointment.repository';
+import { Appointment } from '../domain/appointment';
 
-export class UserApplication {
-  constructor(
-    private readonly repository: UserRepository,
-    private readonly bcryptService: BcryptService) { }
 
-  async save(user: User) {
-    const password = await this.bcryptService.hashPass(user.properties().password);
-    user.update({ password });
-    await this.repository.save(user);
+
+export class AppointmentApplication {
+
+  constructor(private readonly repository: AppointmentRepository) {
+
   }
 
-  async delete(id: string) {
-    const result = await this.repository.findById(id);
-    if (result.isErr()) {
-      return;
-    }
-    if(!result.value) return;
-    const user = result.value;
-    user.delete();
-    return await this.repository.save(user);
+  async save(appointment: Appointment) {
+    return await this.repository.save(appointment);
   }
 
-  async update(fields: UserProperties, id: string) {
-    const result = await this.repository.findById(id);
-    if (result.isErr()) {
-      return;
-    }
-    const user = result.value;
-    user.update(fields);
-    await this.repository.save(user);
-  }
+  receive() {
 
-  async findById(id: string) {
-    const result = await this.repository.findById(id);
-    if (result.isErr()) {
-      return;
-    }
-    if(!result.value) return;
-    return UserResponseDto.fromDomainToResponse(result.value);
-  }
-
-  async find() {
-    const result = await this.repository.find();
-    if (result.isErr()) {
-      return;
-    }
-    return UserResponseDto.fromDomainToResponse(result.value);
-  }
-
-  async getByPage(page: number, pageSize: number) {
-    const result = await this.repository.getByPage(page, pageSize);
-    if (result.isErr()) {
-      return;
-    }
-
-    return result.value;
-  }
-
-  async getByEmail(email: string) {
-    const result = await this.repository.getByEmail(email);
-    if (result.isErr()) {
-      return;
-    }
-    
-    if(!result.value) return;
-    return UserResponseDto.fromDomainToResponse(result.value,true);
   }
 }

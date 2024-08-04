@@ -1,15 +1,7 @@
-import {
-  UserByPage,
-  UserFound,
-  UserFoundByIdOrEmail,
-  UserSaved,
-} from "../../infrastructure/appointment.infrastructure";
-import { User } from "../appointment";
+import { AppointmentResult } from "../../infrastructure/appointment.infrastructure";
+import { Appointment } from "../appointment";
 
-export interface UserRepository {
-  save(user: User): Promise<UserSaved>;
-  findById(id: string): Promise<UserFoundByIdOrEmail>;
-  find(): Promise<UserFound>;
-  getByPage(page: number, pageSize: number): Promise<UserByPage>;
-  getByEmail(email:string): Promise<UserFoundByIdOrEmail>;
+export interface AppointmentRepository {
+  save(appointment: Appointment): Promise<AppointmentResult>;
+  receive(consumer:((message: any )=> void)): Promise<void>;
 }

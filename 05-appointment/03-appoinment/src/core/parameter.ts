@@ -34,4 +34,16 @@ export class Parameter {
   static get rabbitmq_host() {
     return process.env.RABBITMQ_HOST || "localhost";
   }
+
+  static get exchange_name() {
+    return process.env.RABBITMQ_EXCHANGE_NAME || "exchange";
+  }
+
+  static get exchange_type() {
+    return process.env.RABBITMQ_EXCHANGE_TYPE || "direct";
+  }
+
+  static get exchange_name_error() {
+    return process.env.RABBITMQ_EXCHANGE_NAME_ERROR || "exchange_error";
+  }
 }

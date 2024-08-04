@@ -1,17 +1,15 @@
 import { Router } from "express";
 
-import { UserApplication } from "../../../application/appointment.application";
-import { UserRepository } from "../../../domain/repositories/appointment.repository";
-import { UserInfrastructure } from "../../appointment.infrastructure";
-import { UserController } from "./appointment.controller";
-import { BcryptService } from "../../../../../core/application/service/bcrypt.service";
+import { AppointmentApplication } from "../../../application/appointment.application";
+import { AppointmentInfrastrcuture } from "../../appointment.infrastructure";
+import { AppointmentRepository } from "../../../../appointment/domain/repositories/appointment.repository";
+import { AppointmentController } from "./appointment.controller";
 
-const bcryptService: BcryptService = new BcryptService();
-const repository: UserRepository = new UserInfrastructure();
-const application = new UserApplication(repository, bcryptService);
-const controller = new UserController(application);
+const repository: AppointmentRepository = new AppointmentInfrastrcuture();
+const application = new AppointmentApplication(repository);
+const controller = new AppointmentController(application);
 
-class UserRoute {
+class AppointmentRoutes {
   private router: Router;
 
   constructor() {
@@ -20,30 +18,7 @@ class UserRoute {
   }
 
   addRoutes() {
-    this.router.post("/", controller.insert);
-    this.router.get("/", controller.get);
-
-    /**
-     * @openapi
-     * /product/v1:
-     *  get:
-     *   tags:
-     *    - Product
-     *   responses:
-     *    200:
-     *      description: Get all products
-     *    500:
-     *      description: Internal server error
-     *      content:
-     *        application/json:
-     *          schema:
-     *           $ref: '#/components/schemas/Error'
-     */
-    this.router.get("/page", controller.getByPage);
-    this.router.get("/:id", controller.getById);
-    this.router.put("/:id", controller.update);
-    this.router.delete("/:id", controller.delete);
-    this.router.post("/user-by-email", controller.getByEmail);
+    this.router.post("/", controller.create);
   }
 
   getRouter(): Router {
@@ -51,4 +26,4 @@ class UserRoute {
   }
 }
 
-export default new UserRoute().getRouter();
+export default new AppointmentRoutes().getRouter();
