@@ -1,7 +1,5 @@
 import { Column, CreateDateColumn, Entity, PrimaryColumn } from "typeorm";
-import { TCountry } from "../../domain/appointment";
-
-export type TState = "QUEUED" | "CONFIRMED" | "CANCELED" | "ERROR"; 
+import { TCountry, TState } from '../../domain/appointment';
 
 @Entity({name: "appointment"})
 export class AppointmentEntity {
@@ -44,5 +42,8 @@ export class AppointmentEntity {
 
     @Column({ type: "timestamp"})
     createdAt: Date;
+
+    @Column({ type: "timestamp", nullable: true})
+    updatedAt: Date;
 
 }

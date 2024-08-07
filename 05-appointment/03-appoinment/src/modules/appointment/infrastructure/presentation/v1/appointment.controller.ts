@@ -41,4 +41,8 @@ export class AppointmentController {
       response
     })
   }
+
+  receive = async () => {
+    this.application.receiveMessageConfirmed();
+  }
 }

@@ -20,11 +20,30 @@ export class AppointmentInfrastrcuture implements AppointmentRepository {
     await this.sendToQueue(appointment);
     //guardar en bd la cita 
     await this.saveAppointmentToDb(appointment);
-    
+
     return Promise.resolve(ok(appointment));
   }
-  receive(consumer: ((message: any) => void)): Promise<void> {
-    throw new Error('Method not implemented.');
+  async receiveMeesageConfirmed(consumer: ((message: any) => void)): Promise<void> {
+
+    const channel = RabbitmqBootstrap.channel;
+    const exchangeName = Parameter.exchange_name;
+    const exchangeType = Parameter.exchange_type;
+    const exchangeOptions: ExchangeOptions = { durable: true };
+    const routingkey = Parameter.exchange_routing_key_message_confirmed;
+
+    // crear intercambiador 
+    await channel.assertExchange(exchangeName, exchangeType, exchangeOptions);
+
+    // crea la cola 
+    const queue = await channel.assertQueue("", { exclusive: true });
+    // exclusive indica qye solo va escuchar mensajes de este intercambiador
+
+    // unir cola con intercambiador
+    await channel.bindQueue(queue.queue, exchangeName, routingkey);
+
+    // consumir el mensaje
+    await channel.consume(queue.queue, consumer, { noAck: false });
+    // noAck: false no confirmar mensajes automaticamente
   }
 
   private async saveAppointmentToDb(appointment: Appointment) {
@@ -33,7 +52,7 @@ export class AppointmentInfrastrcuture implements AppointmentRepository {
   }
 
   private async sendToQueue(appointment: Appointment) {
-    
+
     const channel = RabbitmqBootstrap.channel;
     const exchangeName = Parameter.exchange_name;
     const exchangeType = Parameter.exchange_type;
@@ -43,7 +62,16 @@ export class AppointmentInfrastrcuture implements AppointmentRepository {
     //setear la cola
     channel.assertExchange(exchangeName, exchangeType, exchangeOptions);
     // publicar mensajes en la cola
-    channel.publish(exchangeName, routingkey,Buffer.from(JSON.stringify(appointment.properties)));
+    channel.publish(exchangeName, routingkey, Buffer.from(JSON.stringify(appointment.properties)));
+  }
+
+  async findById(id: string): Promise<AppointmentResult> {
+    const repository = await MysqlBootstrap.dataSource.getRepository(AppointmentEntity);
+    const appointment = await repository.findOne({
+      where: { id }
+    });
+
+    return Promise.resolve(ok(AppointmentDto.fromDataToDomain(appointment)));
   }
 
 }

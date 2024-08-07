@@ -1,5 +1,7 @@
 import { v4 as uuidv } from 'uuid';
 
+export type TState = "QUEUED" | "CONFIRMED" | "CANCELED" | "ERROR";
+
 export enum TCountry {
     CO = "CO",
     PE = "PE",
@@ -29,6 +31,9 @@ export class Appointment {
     private readonly specialtyId: number;
     private readonly centerId: number;
     private readonly isoCountryCode: TCountry;
+    private state: TState;
+    private readonly createAt: Date;
+    private udpadtedAt: Date | null;
 
     constructor(props: AppointmentProps) {
 
@@ -36,13 +41,15 @@ export class Appointment {
         if (props.lastname.length < 3) throw new Error("Invalid lastaname");
         if (props.email.length < 3) throw new Error("Invalid email");
         if (!props.date) throw new Error("Invalid date");
-        if(new Date() > new Date(props.date)) throw new Error("La fecha de la agenda no debe ser menor a la actual")
+        if (new Date() > new Date(props.date)) throw new Error("La fecha de la agenda no debe ser menor a la actual")
         if (!props.medicId || isNaN(props.medicId)) throw new Error("Invalid medicId");
         if (!props.centerId || isNaN(props.centerId)) throw new Error("Invalid centerId");
         if (!props.specialtyId || isNaN(props.specialtyId)) throw new Error("Invalid specialtyId");
 
         Object.assign(this, props);
         this.id = uuidv()
+        this.state = "QUEUED";
+        this.createAt = new Date();
 
     }
 
@@ -57,6 +64,14 @@ export class Appointment {
             specialtyId: this.specialtyId,
             centerId: this.centerId,
             isoCountryCode: this.isoCountryCode,
+            state: this.state,
+            createAt: this.createAt,
+            updateAt: this.udpadtedAt,
         }
+    }
+
+
+    update( state: TState) {
+        this.state = state;
     }
 } 

@@ -1,5 +1,5 @@
 import { Appointment } from "../../domain/appointment";
-import { AppointmentEntity, TState } from '../entities/appointment.entity';
+import { AppointmentEntity } from '../entities/appointment.entity';
 
 
 
@@ -20,10 +20,29 @@ export class AppointmentDto {
         entity.centerId = appointment.properties.centerId;
         entity.specialtyId = appointment.properties.specialtyId;
         entity.isoCountryCode = appointment.properties.isoCountryCode;
-        entity.state = "QUEUED";
-        entity.createdAt = new Date();
+        entity.state = appointment.properties.state;
+        entity.createdAt = appointment.properties.createAt;
         
         return entity;
 
+    }
+
+    static fromDataToDomain(appointment: AppointmentEntity): Appointment {
+        const appointmentProps = {
+            id: appointment.id,
+            name: appointment.name,
+            lastname: appointment.lastname,
+            email: appointment.email,
+            date: appointment.date.toISOString(),
+            medicId: appointment.medicId,
+            specialtyId: appointment.specialtyId,
+            centerId: appointment.centerId,
+            isoCountryCode: appointment.isoCountryCode,
+            state: appointment.state,
+            createdAt: appointment.createdAt,
+            updatedAt: appointment.updatedAt,
+        }
+
+        return new Appointment(appointmentProps)
     }
 }
