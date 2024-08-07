@@ -47,6 +47,10 @@ export class Parameter {
     return process.env.RABBITMQ_EXCHANGE_NAME_ERROR || "exchange_error";
   }
 
+  static get exchange_routing_key() {
+    return process.env.RABBITMQ_ROUTING_KEY || 'CO';
+  }
+
   static get exchange_routing_key_message_confirmed() {
     return process.env.RABBITMQ_ROUTING_KEY_MESSAGE_CONFIRMED || "message_confirmed"
   }
