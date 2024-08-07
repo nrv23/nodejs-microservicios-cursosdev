@@ -19,8 +19,6 @@ que se le pase tenga todas sus propiedades opcionales
 Los dtos si pueden ser clases estatticas, pero adaptadores o servicios o providers deben ser 
 inyecciones de dependencias
 
-Llevo el curso en la sexta clase, tiempo 2:01:09
-
 Patron corto circuito.
 
 usa 3 estados OPEN, CLOSE y HALF-OPEN 
@@ -28,3 +26,27 @@ CLOSE: indica que se puede hacer la solicitud correctamente
 OPEN: Se cierra la conexion con el servicio
 HALF-OPEN: Se abre por un tiempo mientras el servicio a consultar se reestablece, y se lleva un contador de solicitudes
 enviadas para ver hasta cuantas que generen error cambien el estado a OPEN para devoelver un error por defecto
+
+la logica siempre va ir en la capa de aplicacion.
+
+Por ejemplo obtener informacion de varios microservicios y generar un reporte en otro microservicio.
+
+La capa de infraestrcutura hace los llamados a los microservicios y la capa de aplicacion es la que
+genera la logica.
+
+path 
+
+user :
+C:\Users\navem\OneDrive\Escritorio\cursos\nodejs-microservicios-cursosdev\05-appointment\01-user
+auth: 
+C:\Users\navem\OneDrive\Escritorio\cursos\nodejs-microservicios-cursosdev\05-appointment\02-auth
+appointment:
+C:\Users\navem\OneDrive\Escritorio\cursos\nodejs-microservicios-cursosdev\05-appointment\03-appoinment
+appointment-pe 
+C:\Users\navem\OneDrive\Escritorio\cursos\nodejs-microservicios-cursosdev\05-appointment\04-appoinment-pe
+
+
+
+revisar porque se estan enviando muchos mensajes confirmados en un solo llamado
+
+Llevo el curso en la séptima clase, tiempo 2:02:37
