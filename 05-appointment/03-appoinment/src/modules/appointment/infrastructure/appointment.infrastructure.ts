@@ -16,10 +16,11 @@ export type AppointmentResult = Result<Appointment, Error>;
 export class AppointmentInfrastrcuture implements AppointmentRepository {
   async save(appointment: Appointment): Promise<AppointmentResult> {
 
-    // enviar datos a la cola
-    await this.sendToQueue(appointment);
     //guardar en bd la cita 
     await this.saveAppointmentToDb(appointment);
+    // enviar datos a la cola
+    await this.sendToQueue(appointment);
+
 
     return Promise.resolve(ok(appointment));
   }
@@ -46,7 +47,7 @@ export class AppointmentInfrastrcuture implements AppointmentRepository {
     // noAck: false no confirmar mensajes automaticamente
   }
 
-  private async saveAppointmentToDb(appointment: Appointment) {
+  async saveAppointmentToDb(appointment: Appointment) {
     const appointmentEntity = AppointmentDto.fromDomainToEntity(appointment);
     await MysqlBootstrap.dataSource.getRepository(AppointmentEntity).save(appointmentEntity)
   }
@@ -70,6 +71,7 @@ export class AppointmentInfrastrcuture implements AppointmentRepository {
     const appointment = await repository.findOne({
       where: { id }
     });
+
 
     return Promise.resolve(ok(AppointmentDto.fromDataToDomain(appointment)));
   }

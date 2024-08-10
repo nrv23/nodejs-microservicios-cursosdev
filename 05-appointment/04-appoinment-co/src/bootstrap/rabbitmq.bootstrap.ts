@@ -10,7 +10,7 @@ export class RabbitmqBootstrap implements IBootstrap {
   init(): Promise<BootstrapReturn> {
     return new Promise(async (resolve, reject) => {
       const host = Parameter.rabbitmq_host;
-
+   
       try {
         const connection = await amqp.connect(`amqp://${host}`);
         this.connection = connection;

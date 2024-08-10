@@ -15,24 +15,25 @@ export class AppointmentApplication {
   }
 
   async consumer(message: any) {
-    console.log("mensaje de vuelta ", message.content.toString());
-    const { id, state } = JSON.parse(message.content.toString());
 
-    const foundResult = await this.repository.findById(id);
+    try {
 
-    if (foundResult.isErr()) return;
-
-    const appointment = foundResult.value;
-
-    appointment.update(state);
-
-    await this.repository.save(appointment);
-
-    setTimeout(() => {
-      RabbitmqBootstrap.channel.ack(message);
-      console.log("La cita ha sido confirmada");
-      // actualizar el estado de la cita
-    }, 5000);
+      if(message !== null) {
+        console.log("mensaje de vuelta ", message.content.toString());
+        const { id, state } = JSON.parse(message.content.toString());
+        const foundResult = await this.repository.findById(id);
+        if (foundResult.isErr()) return;
+        const appointment = foundResult.value;
+        appointment.update(state);
+        await this.repository.saveAppointmentToDb(appointment);
+        
+        RabbitmqBootstrap.channel.ack(message);
+        console.log("La cita ha sido confirmada");
+      }
+    } catch (error) {
+      console.log({error});
+      RabbitmqBootstrap.channel.nack(message,false,false);
+    }
   }
 
   async receiveMessageConfirmed() {

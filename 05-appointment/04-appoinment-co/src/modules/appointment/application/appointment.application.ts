@@ -10,17 +10,21 @@ export class AppointmentApplication {
     this.consumer = this.consumer.bind(this);
   }
 
-  consumer(message: any) {
-    console.log(message.content.toString());
-    const { id } = JSON.parse(message.content.toString());
-    setTimeout(async () => {
-      console.log("mensaje confirmado")
+  async consumer(message: any) {
+    try {
+      if(message !== null ) {
+        console.log(message.content.toString());
+        const { id } = JSON.parse(message.content.toString());
+        console.log("mensaje confirmado")
         RabbitmqBootstrap.channel.ack(message);
-        await this.repository.sendToQueueMessageConfirm(id,'CONFIRMED');
-    }, 5000);
+        await this.repository.sendToQueueMessageConfirm(id, 'CONFIRMED');
+      }
+    } catch (error) {
+      console.log({error})
+    }
   }
 
   async receive() {
-      await this.repository.receive(this.consumer);
+    await this.repository.receive(this.consumer);
   }
 }

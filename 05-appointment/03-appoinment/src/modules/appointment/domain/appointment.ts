@@ -47,9 +47,9 @@ export class Appointment {
         if (!props.specialtyId || isNaN(props.specialtyId)) throw new Error("Invalid specialtyId");
 
         Object.assign(this, props);
-        this.id = uuidv()
-        this.state = "QUEUED";
-        this.createAt = new Date();
+        if(!this.id) this.id = uuidv();
+        if(!this.state) this.state = "QUEUED";
+        if(!this.createAt) this.createAt = new Date();
 
     }
 
@@ -73,5 +73,6 @@ export class Appointment {
 
     update( state: TState) {
         this.state = state;
+        this.udpadtedAt = new Date();
     }
 } 
