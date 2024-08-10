@@ -21,11 +21,9 @@ export class AppointmentInfrastrcuture implements AppointmentRepository {
     const exchangeType = Parameter.exchange_type;
     const exchangeOptions: ExchangeOptions = { durable: true };
     const routingkey = Parameter.exchange_routing_key; // indica a cual cola se envia por país
-
     const exhchangeNameDlq = Parameter.exchange_name_dlq;
     const exchangeRoutingKeyDlq = Parameter.exchange_routing_key_dlq;
-
-
+    
     // crear intercambiador 
     await channel.assertExchange(exchangeName, exchangeType, exchangeOptions);
 
@@ -33,10 +31,10 @@ export class AppointmentInfrastrcuture implements AppointmentRepository {
     await channel.assertExchange(exhchangeNameDlq, exchangeType, exchangeOptions);
 
     // crea la cola 
-    const queue = await channel.assertQueue("", { exclusive: true, 
+    const queue = await channel.assertQueue("", { exclusive: true,
       deadLetterExchange: exhchangeNameDlq, 
       deadLetterRoutingKey: exchangeRoutingKeyDlq 
-    });
+     });
     // exclusive indica qye solo va escuchar mensajes de este intercambiador
 
     // unir cola con intercambiador
