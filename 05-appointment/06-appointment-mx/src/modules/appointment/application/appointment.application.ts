@@ -2,8 +2,6 @@ import { AppointmentRepository } from '../domain/repositories/appointment.reposi
 import { Appointment } from '../domain/appointment';
 import { RabbitmqBootstrap } from '../../../bootstrap/rabbitmq.bootstrap';
 
-
-
 export class AppointmentApplication {
 
   constructor(private readonly repository: AppointmentRepository) {
@@ -12,15 +10,15 @@ export class AppointmentApplication {
 
   async consumer(message: any) {
     try {
-      if(message !== null ) {
+      if (message !== null) {
         console.log(message.content.toString());
         const { id } = JSON.parse(message.content.toString());
         console.log("mensaje confirmado")
-        RabbitmqBootstrap.channel.ack(message);
+        RabbitmqBootstrap.channel.reject(message, false);
         await this.repository.sendToQueueMessageConfirm(id, 'CONFIRMED');
       }
     } catch (error) {
-      console.log({error})
+      console.log({ error })
     }
   }
 

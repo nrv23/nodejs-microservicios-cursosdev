@@ -62,4 +62,8 @@ export class AppointmentInfrastrcuture implements AppointmentRepository {
     channel.publish(exchangeName, routingkey, Buffer.from(JSON.stringify({ id, state })));
   }
 
+  // funciones para consumir cola de errores dlq
+
+  
+
 }
