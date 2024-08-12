@@ -15,7 +15,7 @@ export class AppointmentApplication {
         const { id } = JSON.parse(message.content.toString());
         console.log("mensaje confirmado")
         RabbitmqBootstrap.channel.reject(message, false);
-        await this.repository.sendToQueueMessageConfirm(id, 'CONFIRMED');
+        await this.repository.sendToQueueMessageConfirm(id, 'ERROR');
       }
     } catch (error) {
       console.log({ error })
