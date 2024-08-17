@@ -43,10 +43,15 @@ C:\Users\navem\OneDrive\Escritorio\cursos\nodejs-microservicios-cursosdev\05-app
 appointment:
 C:\Users\navem\OneDrive\Escritorio\cursos\nodejs-microservicios-cursosdev\05-appointment\03-appoinment
 appointment-pe 
-C:\Users\navem\OneDrive\Escritorio\cursos\nodejs-microservicios-cursosdev\05-appointment\04-appoinment-pe
-
-
-
+C:\Users\navem\OneDrive\Escritorio\cursos\nodejs-microservicios-cursosdev\05-appointment\04-appoinment-co
+appoinment-pe
+C:\Users\navem\OneDrive\Escritorio\cursos\nodejs-microservicios-cursosdev\05-appointment\05-appointment-pe
+appointment-mx
+C:\Users\navem\OneDrive\Escritorio\cursos\nodejs-microservicios-cursosdev\05-appointment\06-appointment-mx
+helpdesk
+C:\Users\navem\OneDrive\Escritorio\cursos\nodejs-microservicios-cursosdev\05-appointment\07-help-desk
+gateway
+C:\Users\navem\OneDrive\Escritorio\cursos\nodejs-microservicios-cursosdev\05-appointment\08-api-gateway
 revisar porque se estan enviando muchos mensajes confirmados en un solo llamado
-
-Llevo el curso en la séptima clase, tiempo 2:02:37
+Llevo el curso en la octava clase tiempo 50:42. Buscar los ejemplos de creacion de pods 
+y archivos yml en el github del curso.

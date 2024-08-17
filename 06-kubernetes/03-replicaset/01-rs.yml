@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: rs-app
+spec:
+  replicas: 8
+  selector:
+    matchLabels: # asocia los matchlabels con el metadata de los templates 
+    # para saber acual pod hacer referencia.
+      app: frontend
+      env: dev
+  template:
+    metadata:
+      labels:
+        app: frontend
+        env: dev
+    spec:
+      containers:
+        - name: web01
+          image: httpd:alpine
