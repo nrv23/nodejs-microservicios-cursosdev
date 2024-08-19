@@ -1,0 +1,49 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: parameters
+data:
+  db_host: dev.host.local
+  db_user: dev.user
+  db_pass: dev.pass
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deployment-web
+  namespace: ns-dev
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: frontend
+      env: dev
+  template:
+    metadata:
+      labels:
+        app: frontend
+        env: dev
+    spec:
+      containers:
+        - name: web01
+          image: nginx:alpine
+          env:
+            - name: DB_HOST # nombre de la varuable de entorno
+              # cargar de configmap
+              valueFrom:
+                configMapKeyRef:
+                  name: parameters # nombre del configmap
+                  key: db_host # nombre de la variable del configmap
+            - name: DB_USER # nombre de la varuable de entorno
+              # cargar de configmap
+              valueFrom:
+                configMapKeyRef:
+                  name: parameters # nombre del configmap
+                  key: db_user # nombre de la variable del configmap
+            - name: DB_PASS # nombre de la varuable de entorno
+              # cargar de configmap
+              valueFrom:
+                configMapKeyRef:
+                  name: parameters # nombre del configmap
+                  key: db_pass # nombre de la variable del configmap
+

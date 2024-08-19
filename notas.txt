@@ -55,3 +55,7 @@ C:\Users\navem\OneDrive\Escritorio\cursos\nodejs-microservicios-cursosdev\05-app
 revisar porque se estan enviando muchos mensajes confirmados en un solo llamado
 Llevo el curso en la octava clase tiempo 50:42. Buscar los ejemplos de creacion de pods 
 y archivos yml en el github del curso.
+
+Cluster iP es un servicio que solo tiene acceso dentro del mismo cluster. Por eso se debe usar un port-forward
+para poder conectarse a ese servicio 
+

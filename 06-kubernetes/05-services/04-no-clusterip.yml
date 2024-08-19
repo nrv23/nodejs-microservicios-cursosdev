@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: srv-frontend
+spec:
+  # type: NodePort
+  clusterIP: None
+  selector:
+    app: frontend
+    env: dev
+  ports:
+    - targetPort: 80 # puerto del contenedor
+      port: 9600 # puerto del cluster
+      protocol: TCP
+  

@@ -18,3 +18,11 @@ kubectl api-resources
 ```
 kubectl delete -f nombre_archivo_maanifiesto
 ```
+
+
+### Para ingresar a un contenedor dentro de un pod
+
+```
+kubectl exec -it <nombre_pod> si tiene un solo contenedor -- sh
+kubectl exec -it <nombre_pod> -c <nombre_contenedor> si tiene más de un contenedor -- sh
+```
