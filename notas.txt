@@ -59,3 +59,43 @@ y archivos yml en el github del curso.
 Cluster iP es un servicio que solo tiene acceso dentro del mismo cluster. Por eso se debe usar un port-forward
 para poder conectarse a ese servicio 
 
+=== TIPOS DE EXCHANGES EN RABBITMQ ===
+
+1. DIRECT:
+   - Enruta mensajes a colas que tengan una routing key EXACTA que coincida
+   - Un mensaje solo va a la cola cuya routing key sea idéntica a la del mensaje
+   - Si hay múltiples consumidores en la misma cola, el mensaje se distribuye entre ellos (round-robin)
+   - Ej: routingKey "orden.creada" solo va a colas vinculadas con esa key exacta
+
+2. FANOUT:
+   - Ignora completamente la routing key
+   - Envía el mensaje a TODAS las colas vinculadas al exchange
+   - Ideal para broadcast/publicación a múltiples suscriptores
+   - Todos los consumidores reciben el mismo mensaje (si están en colas diferentes)
+   - Es el más rápido porque no hace validaciones
+
+3. TOPIC:
+   - Enruta basándose en patrones de routing key con wildcards
+   - Usa "*" (coincide con una palabra) y "#" (coincide con cero o más palabras)
+   - Ej: "usuario.*.creado" coincide con "usuario.premium.creado", "usuario.normal.creado"
+   - Ej: "orden.#" coincide con "orden.creada", "orden.actualizada.detalles", etc.
+   - Más flexible que Direct, pero menos que Fanout
+
+4. HEADERS:
+   - Enruta mensajes basándose en los headers del mensaje, no en la routing key
+   - El binding se configura con pares clave-valor
+   - Se usa x-match: "all" (todos los headers deben coincidir) o "any" (al menos uno)
+   - Menos común, útil cuando necesitas lógica compleja de enrutamiento
+
+=== DLQ (DEAD LETTER QUEUE) ===
+
+Es un mecanismo de RabbitMQ para manejar mensajes que no se pudieron procesar correctamente:
+
+- Cuando un consumidor rechaza un mensaje con channel.reject(data, false), en lugar de descartarlo,
+  se envía automáticamente a una cola especial (DLQ)
+- Se configura en assertQueue con deadLetterExchange y deadLetterRoutingKey
+- Permite capturar mensajes problemáticos para auditoría, análisis y reintentos posteriores
+- Es especialmente útil para debugging: puedes ver qué mensajes fallaron y por qué
+- Ejemplo: Si un mensaje dice "default" se rechaza y va a "exchange-dlq" con routing key "dlq-error"
+- Permite implementar patrones de reintentos: procesar la DLQ más tarde con lógica de reintento
+
